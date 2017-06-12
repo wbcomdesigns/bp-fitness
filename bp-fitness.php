@@ -40,6 +40,7 @@ function run_bp_fitness_plugin(){
 	$include_files = array(
 		'inc/bpfit-scripts.php',
 		'inc/bpfit-hooks.php',
+		'inc/profile-menu/bpfit-fitness.php'
 	);
 	foreach ($include_files  as $include_file) include $include_file;
 }
