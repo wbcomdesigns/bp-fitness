@@ -1,0 +1,14 @@
+.bpfit-update-your-weight-panel{
+	border: 1px solid #000;
+	border-radius: 5px;
+	width: 35%;
+	padding: 10px;
+	display: none;
+}
+#bpfit-update-your-weight{
+	margin-left: 10px;
+}
+.bpfit-success{
+	color: green;
+	display: none;
+}

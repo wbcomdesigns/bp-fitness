@@ -87,9 +87,6 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 			echo 'My Walking Content';
 		}
 
-
-
-
 		/**
 		 * Actions performed for "weight" subtab screen show
 		 */
@@ -103,14 +100,14 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 * Actions performed for "weight" subtab screen title show
 		 */
 		function bpfit_weight_subtab_function_to_show_title() {
-			echo 'My Wweight';
+			echo 'Weight Desc.';
 		}
 
 		/**
 		 * Actions performed for "weight" subtab screen content show
 		 */
 		function bpfit_weight_subtab_function_to_show_content() {
-			echo 'My Weight Content';
+			include 'profile-menu/weight/bpfit-my-weight.php';
 		}
 	}
 	new Bpfit_Hooks();

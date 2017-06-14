@@ -37,10 +37,15 @@ function bpfit_plugin_admin_notice() {
 }
 
 function run_bp_fitness_plugin(){
+	//Defining constants
+	define( 'BPFIT_PLUGIN_PATH', plugin_dir_path(__FILE__) );
+	define( 'BPFIT_PLUGIN_URL', plugin_dir_url(__FILE__) );
+
+	//Include required files
 	$include_files = array(
 		'inc/bpfit-scripts.php',
 		'inc/bpfit-hooks.php',
-		//'inc/profile-menu/bpfit-fitness.php'
+		'inc/bpfit-ajax.php'
 	);
 	foreach ($include_files  as $include_file) include $include_file;
 }
