@@ -1,14 +1,15 @@
 <?php
+
+error_reporting(E_ALL);
+error_reporting(1);
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 //Add admin page for displaying buddypress fitness settings
 if( !class_exists( 'BPFit_AdminPage' ) ) {
 	class BPFit_AdminPage{
 
-		private $form_action = 'options.php',
-				$plugin_slug = 'bpfit-settings',
-				$plugin_settings_tabs = array(),
-				$network_activated = false;
+		private $plugin_slug = 'bpfit-settings',
+				$plugin_settings_tabs = array();
 
 		//constructor
 		function __construct() {
@@ -20,7 +21,7 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 
 		//Actions performed to create a custom menu on loading admin_menu
 		function bpfit_add_menu_page() {
-			add_menu_page( __( 'BuddyPress Fitness Settings', 'bp-fitness' ), __( 'Fitness', 'fitness' ), 'manage_options', 'bpfit-settings', array( $this, 'bpfit_admin_settings_page' ), 'dashicons-universal-access-alt' );
+			add_menu_page( __( 'BuddyPress Fitness Settings', 'bp-fitness' ), __( 'Fitness', 'fitness' ), 'manage_options', $this->plugin_slug, array( $this, 'bpfit_admin_settings_page' ), 'dashicons-universal-access-alt' );
 		}
 
 		function bpfit_admin_settings_page() {
@@ -34,29 +35,14 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 				</div>
 			<?php
 			}
-			$tab = isset($_GET['tab']) ? $_GET['tab'] : __FILE__;
+			$tab = isset($_GET['tab']) ? $_GET['tab'] : 'bpfit-settings';
 			?>
 			<div class="wrap">
 				<h2><?php _e('BuddyPress Fitness', 'bp-fitness'); ?></h2>
 				<p><?php _e('This plugin will manage the fitness of the BuddyPress members.', 'bp-fitness'); ?></p>
 				<?php $this->bpfit_plugin_settings_tabs(); ?>
-				<form action="<?php echo $this->form_action; ?>" method="post">
-				<?php
-				if ($this->network_activated && isset($_GET['updated'])) {
-				echo "<div class='updated'><p>" . __('BuddyPress Fitness Settings Saved.', 'bp-fitness') . "</p></div>";
-				}
-				if ('bpfit-settings' == $tab || empty($_GET['tab'])) {
-					settings_fields('bpfit-settings');
-					do_settings_sections(__FILE__);
-					?>
-					<p class="submit">
-					<input name="bpfit_settings_submit" type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
-					</p><?php
-				} else {
-					settings_fields($tab);
-					do_settings_sections($tab);
-				}
-				?>
+				<form action="" method="POST" id="<?php echo $tab;?>-settings-form">
+				<?php do_settings_sections( $tab );?>
 				</form>
 			</div>
 			<?php
@@ -74,37 +60,26 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 
 		function register_general_settings() {
 			$this->plugin_settings_tabs['bpfit-settings'] = __( 'General', 'bp-fitness' );
-			register_setting('bpfit-settings', 'bpfit-settings', array($this, 'bpfit_plugin_options_validate'));
-
-			add_settings_section('general_section', __('General Settings', 'bp-fitness'), array($this, 'bpfit_section_general'), __FILE__);
-			
-			add_settings_field('redirection-url', __('Redirection URL', 'buddyboss-wpld'), array($this, 'wpld_redirection_url'), __FILE__, 'general_section');
+			register_setting('bpfit-settings', 'bpfit-settings');
+			add_settings_section('section_general', ' ', array(&$this, 'bpfit_section_general'), 'bpfit-settings');
 		}
 
 		function register_support_settings() {
 			$this->plugin_settings_tabs['bpfit-support'] = __( 'Support', 'bp-fitness' );
 			register_setting('bpfit-support', 'bpfit-support');
-			add_settings_section('section_support', ' ', array(&$this, 'section_support_desc'), 'bpfit-support');
+			add_settings_section('section_support', ' ', array(&$this, 'bpfit_section_support'), 'bpfit-support');
 		}
 
-		function section_support_desc() {
+		function bpfit_section_support() {
 			if (file_exists(dirname(__FILE__) . '/bpfit-support.php')) {
 				require_once( dirname(__FILE__) . '/bpfit-support.php' );
 			}
 		}
 
-		/**
-		 * Validate plugin option
-		 *
-		 * @since BuddyBoss WPLD (1.0.0)
-		 */
-		public function bpfit_plugin_options_validate($input) {
-			$input['enabled'] = sanitize_text_field($input['enabled']);
-			return $input; // return validated input
-		}
-
-		function bpfit_section_general() {
-
+		 function bpfit_section_general() {
+			if (file_exists(dirname(__FILE__) . '/bpfit-settings.php')) {
+				require_once( dirname(__FILE__) . '/bpfit-settings.php' );
+			}
 		}
 	}
 	new BPFit_AdminPage();

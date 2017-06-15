@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			<h3><?php _e("Need more help?","bp-fitness"); ?></h3>
 
 			<ul>
-				<li><a href="https://www.buddyboss.com/faq/" target="_blank"><?php _e("Frequently Asked Questions","bp-fitness"); ?></a></li>
-				<li><a href="https://www.buddyboss.com/release-notes/" target="_blank"><?php _e("Current Version &amp; Release Notes","bp-fitness"); ?></a></li>
-				<li><a href="https://www.buddyboss.com/updating/" target="_blank"><?php _e("How to Update","bp-fitness"); ?></a></li>
+				<li><a href="" target="_blank"><?php _e("Frequently Asked Questions","bp-fitness"); ?></a></li>
+				<li><a href="" target="_blank"><?php _e("Current Version &amp; Release Notes","bp-fitness"); ?></a></li>
+				<li><a href="" target="_blank"><?php _e("How to Update","bp-fitness"); ?></a></li>
 			</ul>
 
 		</div>
