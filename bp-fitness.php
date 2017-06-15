@@ -23,6 +23,7 @@ function bpfit_plugin_init() {
 		add_action('admin_notices', 'bpfit_plugin_admin_notice');
 	} else {
 		run_bp_fitness_plugin();
+		add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'bpfit_admin_settings_link' );
 	}
 }
 
@@ -44,8 +45,14 @@ function run_bp_fitness_plugin(){
 	//Include required files
 	$include_files = array(
 		'inc/bpfit-scripts.php',
+		'admin/bpfit-admin.php',
 		'inc/bpfit-hooks.php',
 		'inc/bpfit-ajax.php'
 	);
 	foreach ($include_files  as $include_file) include $include_file;
+}
+
+function bpfit_admin_settings_link( $links ) {
+	$settings_link = array( '<a href="'.admin_url('admin.php?page=bpfit-settings').'">Settings</a>' );
+	return array_merge( $links, $settings_link );
 }
