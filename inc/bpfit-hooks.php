@@ -18,6 +18,10 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		*/
 		public function __construct() {
 			add_action( 'bp_setup_nav', array($this, 'bpfit_member_profile_fitness_tab' ) );
+
+			//Debug on init
+			add_action( 'init', array( $this, 'bpfit_debug' ) );
+			add_action( 'admin_init', array( $this, 'bpfit_debug' ) );
 		}
 
 		/**
@@ -108,6 +112,37 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 */
 		function bpfit_weight_subtab_function_to_show_content() {
 			include 'profile-menu/weight/bpfit-my-weight.php';
+		}
+
+		/**
+		 * Actions performed to check if input string is a valid URL
+		 */
+		public static function is_url( $url ) {
+			if(preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i' ,$url)){
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Actions performed to check video type from valid video URL
+		 */
+		public static function get_video_type( $url ) {
+			if ( strpos( $url, 'youtube' ) !== false ) {
+				return 'youtube';
+			} elseif ( strpos( $url, 'vimeo' ) !== false ) {
+				return 'vimeo';
+			} else {
+				return 'other';
+			}
+		}
+
+		/**
+		 * Debug Mode
+		 */
+		function bpfit_debug() {
+			error_reporting(E_ALL);
+			ini_set('display_errors', 1);
 		}
 	}
 	new Bpfit_Hooks();

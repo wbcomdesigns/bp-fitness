@@ -17,13 +17,18 @@ if( !class_exists( 'Bpfit_Styles_Scripts' ) ) {
 		* @author   Wbcom Designs
 		*/
 		public function __construct() {
-			add_action( 'wp_enqueue_scripts', array($this, 'bpfit_enqueue_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array($this, 'bpfit_enqueue_public_scripts' ) );
+
+			//Enqueue admin scripts
+			if( stripos($_SERVER['REQUEST_URI'], 'bpfit-settings') !== false ) {
+				add_action( 'admin_enqueue_scripts', array($this, 'bpfit_enqueue_admin_scripts' ) );
+			}
 		}
 
 		/**
 		 * Actions performed to setup navigation on BP member profile
 		 */
-		public function bpfit_enqueue_scripts(){
+		public function bpfit_enqueue_public_scripts(){
 			if( stripos($_SERVER['REQUEST_URI'], 'fitness') !== false ) {
 				wp_enqueue_style( 'bpfit-front-css', BPFIT_PLUGIN_URL.'assets/public/css/bpfit-front.css' );
 				wp_enqueue_script( 'bpfit-front-js', BPFIT_PLUGIN_URL.'assets/public/js/bpfit-front.js', array( 'jquery' ) );
@@ -36,6 +41,14 @@ if( !class_exists( 'Bpfit_Styles_Scripts' ) ) {
 					)
 				);
 			}
+		}
+
+		/**
+		 * Actions performed to setup navigation on BP member profile
+		 */
+		public function bpfit_enqueue_admin_scripts(){
+			wp_enqueue_style( 'bpfit-admin-css', BPFIT_PLUGIN_URL.'assets/admin/css/bpfit-admin.css' );
+			wp_enqueue_script( 'bpfit-admin-js', BPFIT_PLUGIN_URL.'assets/admin/js/bpfit-admin.js', array( 'jquery' ) );
 		}
 	}
 	new Bpfit_Styles_Scripts();
