@@ -22,6 +22,9 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 			//Debug on init
 			add_action( 'init', array( $this, 'bpfit_debug' ) );
 			add_action( 'admin_init', array( $this, 'bpfit_debug' ) );
+
+			//Modals
+			add_action( 'wp_footer', array( $this, 'bpfit_modals' ) );
 		}
 
 		/**
@@ -81,14 +84,14 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 * Actions performed for "walk" subtab screen title show
 		 */
 		function bpfit_walk_subtab_function_to_show_title() {
-			echo 'My Walking';
+			echo 'Walk Desc.';
 		}
 
 		/**
 		 * Actions performed for "walk" subtab screen content show
 		 */
 		function bpfit_walk_subtab_function_to_show_content() {
-			echo 'My Walking Content';
+			include 'profile-menu/walk/bpfit-my-walk.php';
 		}
 
 		/**
@@ -143,6 +146,29 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		function bpfit_debug() {
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1);
+		}
+
+		/**
+		 * Modals used.
+		 */
+		function bpfit_modals() {
+			if( file_exists( BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php' ) ) {
+				include BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php';
+			}
+		}
+
+		/**
+		 * Get last N dates
+		 */
+		function get_last_n_dates( $days, $format = 'd/m/Y' ) {
+			$m = date("m");
+			$de= date("d");
+			$y= date("Y");
+			$dateArray = array();
+			for( $i=0; $i<=$days-1; $i++ ) {
+				$dateArray[] = date($format, mktime(0,0,0,$m,($de-$i),$y)); 
+			}
+			return array_reverse( $dateArray );
 		}
 	}
 	new Bpfit_Hooks();

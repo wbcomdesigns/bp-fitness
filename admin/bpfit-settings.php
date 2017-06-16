@@ -1,7 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$video_url = '';
 //Save General Settings
 if( isset( $_POST['bpfit-general-settings-submit'] ) ) {
 	$settings_validations_errors = $bpfit_general_settings = array();
@@ -42,6 +41,9 @@ if( isset( $_POST['bpfit-general-settings-submit'] ) ) {
 		}
 	}
 
+	/************************** PAST DATES VALIDATION **************************/
+	$bpfit_general_settings['past_dates_settings'] = sanitize_text_field( $_POST['bpfit-past-dates'] );
+
 	/**
 	 * Check if there are any errors
 	 */
@@ -64,10 +66,16 @@ if( isset( $_POST['bpfit-general-settings-submit'] ) ) {
 
 //Retrieve Settings
 $settings = get_option( 'bpfit_general_settings', true );
+$video_url = $past_dates = '';
 if( isset( $settings['video_settings'] ) ) {
 	$video_type = $settings['video_settings']['video_type'];
 	$video_url = $settings['video_settings']['video_url'];
 }
+
+if( isset( $settings['past_dates_settings'] ) ) {
+	$past_dates = $settings['past_dates_settings'];
+}
+
 //echo '<pre>'; print_r( $settings ); die;
 ?>
 <div class="wrap">
@@ -75,6 +83,7 @@ if( isset( $settings['video_settings'] ) ) {
 	<div class="bpfit-general-settings-container">
 		<table class="form-table">
 			<tbody>
+				<!-- VIDEO SETTINGS -->
 				<tr>
 					<th scope="row">
 						<label for="video-url"><?php _e( 'Video URL', 'bp-fitness' );?></label>
@@ -102,6 +111,18 @@ if( isset( $settings['video_settings'] ) ) {
 							echo '<div class="bpfit-preview-video-panel"><iframe width="520" height="360" src="'.$iframe_src.'" frameborder="0" allowtransparency="true" allowfullscreen></iframe></div>';
 						}
 						?>
+					</td>
+				</tr>
+
+				<!-- NO. OF PAST DAYS FOR WALK AVERAGE SETTINGS -->
+				<tr>
+					<th scope="row">
+						<label for="walk-avg-dates"><?php _e( 'Number Of Past Dates To Show Walk Average', 'bp-fitness' );?></label>
+						<p class="bpfit-description"><?php _e( 'This is the past number of dates that the user will get average of his walking. Will be shown on the profile page.', 'bp-fitness' );?></p>
+					</th>
+					<td>
+						<span class="tooltip"></span>
+						<input required name="bpfit-past-dates" type="number" min="1" class="regular-text" placeholder="<?php _e( 'No. Of Past Dates', 'bp-fitness' );?>" value="<?php echo $past_dates;?>">
 					</td>
 				</tr>
 			</tbody>

@@ -32,4 +32,28 @@ jQuery(document).ready(function($){
 			},
 		});
 	});
+
+	//Slide toggle walk edit panel
+	$(document).on('click', '.bpfit-edit-walk', function(){
+		var panel = $(this).data('panel');
+		$('#bpfit-walk-edit-panel-'+panel).slideToggle();
+	});
+
+	//Open Modal
+	$(document).on('click', '.show-modal', function () {
+		$('#bpfit-daily-steps-modal').css('display', 'block');
+	});
+
+	// When the user clicks on <span> (x), close the modal
+	$(document).on('click', '.close-modal', function () {
+		$('#bpfit-daily-steps-modal').css('display', 'none');
+	});
+
+	// When the user clicks anywhere outside of the modal, close it
+	$(document.body).click(function (event) {
+		var daily_walk_modal = document.getElementById('bpfit-daily-steps-modal');
+		if (event.target == daily_walk_modal) {
+			$('#bpfit-daily-steps-modal').css('display', 'none');
+		}
+	});
 });
