@@ -152,8 +152,10 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 * Modals used.
 		 */
 		function bpfit_modals() {
-			if( file_exists( BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php' ) ) {
-				include BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php';
+			if( is_user_logged_in() ) {
+				if( file_exists( BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php' ) ) {
+					include BPFIT_PLUGIN_PATH.'/inc/modals/bpfit-daily-walk-modal.php';
+				}
 			}
 		}
 

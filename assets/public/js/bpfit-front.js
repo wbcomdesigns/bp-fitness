@@ -56,4 +56,16 @@ jQuery(document).ready(function($){
 			$('#bpfit-daily-steps-modal').css('display', 'none');
 		}
 	});
+
+	/* TABS JS */
+	jQuery('.tabs .tab-links a').on('click', function(e)  {
+		var currentAttrValue = jQuery(this).attr('href');
+		// Show/Hide Tabs
+		jQuery('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
+
+		// Change/remove current tab to active
+		jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+		e.preventDefault();
+	});
+    /* TABS JS */
 });

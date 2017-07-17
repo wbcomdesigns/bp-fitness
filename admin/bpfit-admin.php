@@ -1,7 +1,4 @@
 <?php
-
-error_reporting(E_ALL);
-error_reporting(1);
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 //Add admin page for displaying buddypress fitness settings
@@ -25,16 +22,6 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 		}
 
 		function bpfit_admin_settings_page() {
-			if (isset($_REQUEST['page']) && $_REQUEST['page'] === $this->plugin_slug && isset($_GET['settings-updated'])) {
-			?>
-				<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
-					<p><strong><?php _e('BuddyPress Fitness Settings Saved.', 'bp-fitness'); ?></strong></p>
-					<button type="button" class="notice-dismiss">
-						<span class="screen-reader-text">Dismiss this notice.</span>
-					</button>
-				</div>
-			<?php
-			}
 			$tab = isset($_GET['tab']) ? $_GET['tab'] : 'bpfit-settings';
 			?>
 			<div class="wrap">

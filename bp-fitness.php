@@ -9,8 +9,8 @@
  * License: GPLv2+
  * Text Domain: bp-fitness
  */
-
 if( !defined('ABSPATH') ) exit; // Exit if accessed directly
+if( !defined('BPFIT_TEXT_DOMAIN') ) define( 'BPFIT_TEXT_DOMAIN', 'bp-fitness' );
 
 /**
  * Check plugin requirement on plugins loaded
@@ -19,7 +19,8 @@ if( !defined('ABSPATH') ) exit; // Exit if accessed directly
 add_action('plugins_loaded', 'bpfit_plugin_init');
 function bpfit_plugin_init() {
 	$bp_active = in_array('buddypress/bp-loader.php', get_option('active_plugins'));
-	if ( current_user_can('activate_plugins') && $bp_active !== true ) {
+	$badgeos_active = in_array('badgeos/badgeos.php', get_option('active_plugins'));
+	if ( current_user_can('activate_plugins') && ( $bp_active !== true || $badgeos_active !== true ) ) {
 		add_action('admin_notices', 'bpfit_plugin_admin_notice');
 	} else {
 		run_bp_fitness_plugin();
@@ -28,12 +29,11 @@ function bpfit_plugin_init() {
 }
 
 function bpfit_plugin_admin_notice() {
-	$bpfit_plugin = __( 'BuddyPress Fitness', 'bp-fitness' );
-	$bp_plugin = __( 'BuddyPress', 'bp-fitness' );
+	$bpfit_plugin = 'BuddyPress Fitness';
+	$badgeos_plugin = 'BadgeOS';
+	$bp_plugin = 'BuddyPress';
 
-	echo '<div class="error"><p>'
-	. sprintf(__('%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s.', 'bp-fitness'), '<strong>' . esc_html($bpfit_plugin) . '</strong>', '<strong>' . esc_html($bp_plugin) . '</strong>')
-	. '</p></div>';
+	echo '<div class="error"><p>'.sprintf(__('%1$s is ineffective now as it requires %2$s and %3$s to function correctly.', BPFIT_TEXT_DOMAIN ), '<strong>' . esc_html($bpfit_plugin) . '</strong>', '<strong>' . esc_html($bp_plugin) . '</strong>', '<strong>' . esc_html($badgeos_plugin) . '</strong>').'</p></div>';
 	if (isset($_GET['activate'])) unset($_GET['activate']);
 }
 
@@ -53,6 +53,6 @@ function run_bp_fitness_plugin(){
 }
 
 function bpfit_admin_settings_link( $links ) {
-	$settings_link = array( '<a href="'.admin_url('admin.php?page=bpfit-settings').'">Settings</a>' );
+	$settings_link = array( '<a href="'.admin_url('admin.php?page=bpfit-settings').'">'.__( 'Settings', BPFIT_TEXT_DOMAIN ).'</a>' );
 	return array_merge( $links, $settings_link );
 }
