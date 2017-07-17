@@ -14,6 +14,8 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 
 			add_action('admin_init', array($this, 'register_general_settings'));
 			add_action('admin_init', array($this, 'register_support_settings'));
+
+			$this->bpfit_save_general_settings();
 		}
 
 		//Actions performed to create a custom menu on loading admin_menu
@@ -68,6 +70,76 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 				require_once( dirname(__FILE__) . '/bpfit-settings.php' );
 			}
 		}
+
+		/**
+		 *
+		 */
+		function bpfit_save_general_settings(){
+			if( isset( $_POST['bpfit-general-settings-submit'] ) ) {
+				$settings_validations_errors = $bpfit_general_settings = array();
+
+				/************************** VIDEO VALIDATION **************************/
+				$video_url = sanitize_text_field( $_POST['bpfit-video-url'] );
+				$is_url = Bpfit_Hooks::is_url( $video_url );
+				if( $is_url === false ) {
+					$settings_validations_errors[] = 'The URL entered is not a valid URL!';
+				} else {
+					/**
+					 * Its a valid URL
+					 * Check the type of the video, if its a youtube, or vimeo or any other
+					 */
+					$video_type = Bpfit_Hooks::get_video_type( $video_url );
+
+					if( $video_type == 'other' ) {
+						/**
+						 * Check if the URL entered is a video URL
+						 */
+						$headers = get_headers( $video_url );
+						$video_exist = implode( ',', $headers );
+						if( stripos( $video_exist, 'video' ) === false ) {
+							$settings_validations_errors[] = 'The URL entered does not contain a video!';
+						} else {
+							$video_settings = array(
+								'video_type' => $video_type,
+								'video_url' => $video_url
+							);
+							$bpfit_general_settings['video_settings'] = $video_settings;
+						}
+					} else {
+						$video_settings = array(
+							'video_type' => $video_type,
+							'video_url' => $video_url
+						);
+						$bpfit_general_settings['video_settings'] = $video_settings;
+					}
+				}
+
+				/************************** PAST DATES **************************/
+				$bpfit_general_settings['past_dates_settings'] = sanitize_text_field( $_POST['bpfit-past-dates'] );
+
+				/************************** BADGE OS POINTS / STEPS **************************/
+				$bpfit_general_settings['badgeos_points_settings'] = sanitize_text_field( $_POST['bpfit-badgeos-points'] );
+				$bpfit_general_settings['steps_walked_settings'] = sanitize_text_field( $_POST['bpfit-steps-walked'] );
+
+				/**
+				 * Check if there are any errors
+				 */
+				if( !empty( $settings_validations_errors ) ) {
+					$err_msg = "<div class='error is-dismissible' id='message'>";
+					foreach ( $settings_validations_errors as $key => $failure ) {
+						$err_msg .= "<p>".__( $failure, BPFIT_TEXT_DOMAIN )."</p>";
+					}
+					$err_msg .= "</div>";
+					echo $err_msg;
+				} else {
+					// echo '<pre>'; print_r( $bpfit_general_settings ); die;
+					update_option( 'bpfit_general_settings', $bpfit_general_settings );
+					$success_msg = "<div class='notice updated is-dismissible' id='message'>";
+					$success_msg .= "<p>".__( 'BuddyPress Fitness Settings Saved.', BPFIT_TEXT_DOMAIN )."</p>";
+					$success_msg .= "</div>";
+					echo $success_msg;
+				}
+			}
+		}
 	}
-	new BPFit_AdminPage();
 }

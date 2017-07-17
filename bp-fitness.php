@@ -11,6 +11,7 @@
  */
 if( !defined('ABSPATH') ) exit; // Exit if accessed directly
 if( !defined('BPFIT_TEXT_DOMAIN') ) define( 'BPFIT_TEXT_DOMAIN', 'bp-fitness' );
+global $bpfitness;
 
 /**
  * Check plugin requirement on plugins loaded
@@ -47,9 +48,17 @@ function run_bp_fitness_plugin(){
 		'inc/bpfit-scripts.php',
 		'admin/bpfit-admin.php',
 		'inc/bpfit-hooks.php',
-		'inc/bpfit-ajax.php'
+		'inc/bpfit-ajax.php',
+		'inc/bpfit-globals.php'
 	);
 	foreach ($include_files  as $include_file) include $include_file;
+
+	//Initialize admin class
+	new BPFit_AdminPage();
+	
+	//Initialize globals class
+	global $bpfitness;
+	$bpfitness = new Bpfit_Globals();
 }
 
 function bpfit_admin_settings_link( $links ) {

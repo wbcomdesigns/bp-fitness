@@ -23,6 +23,8 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 			add_action( 'init', array( $this, 'bpfit_debug' ) );
 			add_action( 'admin_init', array( $this, 'bpfit_debug' ) );
 
+			//add_action( 'bp_setup_admin_bar', array( $this, 'bpfit_setup_admin_bar' ), 80 );
+
 			//Modals
 			add_action( 'wp_footer', array( $this, 'bpfit_modals' ) );
 		}
@@ -115,6 +117,44 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 */
 		function bpfit_weight_subtab_function_to_show_content() {
 			include 'profile-menu/weight/bpfit-my-weight.php';
+		}
+
+		/**
+		 *
+		 */
+		public function bpfit_setup_admin_bar( $wp_admin_nav = array() ) {
+			global $wp_admin_bar, $bpfitness;
+			$profile_menu_slug = $bptodo->profile_menu_slug;
+			$profile_menu_label_plural = $bptodo->profile_menu_label_plural;
+			$my_todo_items = $bptodo->my_todo_items;
+
+			$base_url = bp_loggedin_user_domain().$profile_menu_slug;
+			$todo_add_url = $base_url.'/add';
+			$todo_list_url = $base_url.'/list';
+			if ( is_user_logged_in() ) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'my-account-buddypress',
+					'id' => 'my-account-'.$profile_menu_slug,
+					'title' => __( $profile_menu_label_plural.' <span class="count">'.$my_todo_items.'</span>', BPTODO_TEXT_DOMAIN ),
+					'href' => trailingslashit( $todo_list_url )
+				) );
+
+				// Add add-new submenu
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'my-account-'.$profile_menu_slug,
+					'id'     => 'my-account-'.$profile_menu_slug.'-'.'list',
+					'title'  => __( 'List', BPTODO_TEXT_DOMAIN ),
+					'href'   => trailingslashit( $todo_list_url )
+				) );
+
+				// Add add-new submenu
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'my-account-'.$profile_menu_slug,
+					'id'     => 'my-account-'.$profile_menu_slug.'-'.'add',
+					'title'  => __( 'Add', BPTODO_TEXT_DOMAIN ),
+					'href'   => trailingslashit( $todo_add_url )
+				) );
+			}
 		}
 
 		/**
