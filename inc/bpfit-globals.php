@@ -14,7 +14,9 @@ if( !class_exists( 'Bpfit_Globals' ) ) {
 				$video_url,
 				$past_dates,
 				$badgeos_points,
-				$steps_walked;
+				$steps_walked,
+				$profile_menu_label,
+				$profile_menu_slug;
 		/**
 		* Constructor.
 		*
@@ -49,6 +51,13 @@ if( !class_exists( 'Bpfit_Globals' ) ) {
 			if( isset( $settings['steps_walked_settings'] ) ) {
 				$this->steps_walked = $settings['steps_walked_settings'];
 			}
+
+			//Profile menu label
+			$this->profile_menu_label = 'Fitness';
+			if( isset( $settings['profile_menu_label'] ) ) {
+				$this->profile_menu_label = $settings['profile_menu_label'];
+			}
+			$this->profile_menu_slug = str_replace( ' ', '-', strtolower( $this->profile_menu_label ) );
 		}
 
 		public static function pluralize($singular, $plural=null) {

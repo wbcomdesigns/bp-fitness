@@ -23,7 +23,7 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 			add_action( 'init', array( $this, 'bpfit_debug' ) );
 			add_action( 'admin_init', array( $this, 'bpfit_debug' ) );
 
-			//add_action( 'bp_setup_admin_bar', array( $this, 'bpfit_setup_admin_bar' ), 80 );
+			add_action( 'bp_setup_admin_bar', array( $this, 'bpfit_setup_admin_bar' ), 80 );
 
 			//Modals
 			add_action( 'wp_footer', array( $this, 'bpfit_modals' ) );
@@ -33,12 +33,16 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 * Actions performed to setup navigation on BP member profile
 		 */
 		public function bpfit_member_profile_fitness_tab(){
-			global $bp;
-			$name = bp_get_displayed_user_username();
-			$parent_slug = 'fitness';
+			global $bp, $bpfitness;
+			$profile_menu_label = $bpfitness->profile_menu_label;
+			$profile_menu_slug = $bpfitness->profile_menu_slug;
+			
+			$displayed_uid = bp_displayed_user_id();
+			$displayed_user_link = bp_core_get_userlink( $displayed_uid, false, true );
+
 			$tab_args = array(
-				'name'                      => __( 'Fitness', 'bp-fitness' ),
-				'slug'                      => $parent_slug,
+				'name'                      => __( $profile_menu_label, 'bp-fitness' ),
+				'slug'                      => $profile_menu_slug,
 				'screen_function'           => 'bpfit_fitness_menu_function_to_show_screen',
 				'position'                  => 75,
 				'default_subnav_slug'       => 'walk',
@@ -51,11 +55,11 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 				array(
 					'name' => 'Walk',
 					'slug' => 'walk',
-					'parent_url' => $bp->loggedin_user->domain . $parent_slug.'/',
-					'parent_slug' => $parent_slug,
+					'parent_url' => $bp->loggedin_user->domain . $profile_menu_slug.'/',
+					'parent_slug' => $profile_menu_slug,
 					'screen_function' => array($this, 'bpfit_walk_subtab_show_screen'),
 					'position' => 100,
-					'link' => home_url( "/members/$name/$parent_slug/walk/" ),
+					'link' => $displayed_user_link.$profile_menu_slug.'/walk',
 				)
 			);
 
@@ -64,11 +68,11 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 				array(
 					'name' => 'Weight',
 					'slug' => 'weight',
-					'parent_url' => $bp->loggedin_user->domain . $parent_slug.'/',
-					'parent_slug' => $parent_slug,
+					'parent_url' => $bp->loggedin_user->domain . $profile_menu_slug.'/',
+					'parent_slug' => $profile_menu_slug,
 					'screen_function' => array($this, 'bpfit_weight_subtab_show_screen'),
 					'position' => 100,
-					'link' => home_url( "/members/$name/$parent_slug/weight/" ),
+					'link' => $displayed_user_link.$profile_menu_slug.'/weight',
 				)
 			);
 		}
@@ -124,35 +128,34 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 		 */
 		public function bpfit_setup_admin_bar( $wp_admin_nav = array() ) {
 			global $wp_admin_bar, $bpfitness;
-			$profile_menu_slug = $bptodo->profile_menu_slug;
-			$profile_menu_label_plural = $bptodo->profile_menu_label_plural;
-			$my_todo_items = $bptodo->my_todo_items;
+			$profile_menu_label = $bpfitness->profile_menu_label;
+			$profile_menu_slug = $bpfitness->profile_menu_slug;
 
 			$base_url = bp_loggedin_user_domain().$profile_menu_slug;
-			$todo_add_url = $base_url.'/add';
-			$todo_list_url = $base_url.'/list';
+			$walk_url = $base_url.'/walk';
+			$weight_url = $base_url.'/weight';
 			if ( is_user_logged_in() ) {
 				$wp_admin_bar->add_menu( array(
 					'parent' => 'my-account-buddypress',
 					'id' => 'my-account-'.$profile_menu_slug,
-					'title' => __( $profile_menu_label_plural.' <span class="count">'.$my_todo_items.'</span>', BPTODO_TEXT_DOMAIN ),
-					'href' => trailingslashit( $todo_list_url )
+					'title' => __( $profile_menu_label, BPFIT_TEXT_DOMAIN ),
+					'href' => trailingslashit( $walk_url )
 				) );
 
 				// Add add-new submenu
 				$wp_admin_bar->add_menu( array(
 					'parent' => 'my-account-'.$profile_menu_slug,
-					'id'     => 'my-account-'.$profile_menu_slug.'-'.'list',
-					'title'  => __( 'List', BPTODO_TEXT_DOMAIN ),
-					'href'   => trailingslashit( $todo_list_url )
+					'id'     => 'my-account-'.$profile_menu_slug.'-'.'walk',
+					'title'  => __( 'Walk', BPFIT_TEXT_DOMAIN ),
+					'href'   => trailingslashit( $walk_url )
 				) );
 
 				// Add add-new submenu
 				$wp_admin_bar->add_menu( array(
 					'parent' => 'my-account-'.$profile_menu_slug,
-					'id'     => 'my-account-'.$profile_menu_slug.'-'.'add',
-					'title'  => __( 'Add', BPTODO_TEXT_DOMAIN ),
-					'href'   => trailingslashit( $todo_add_url )
+					'id'     => 'my-account-'.$profile_menu_slug.'-'.'weight',
+					'title'  => __( 'Weight', BPFIT_TEXT_DOMAIN ),
+					'href'   => trailingslashit( $weight_url )
 				) );
 			}
 		}

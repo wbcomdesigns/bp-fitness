@@ -5,6 +5,7 @@
 		<?php
 		$steps = 0;
 		$saved_steps = get_user_meta( $user_id, 'my_steps', true );
+		echo '<pre>'; print_r( $saved_steps ); die;
 		if( !empty( $saved_steps ) && array_key_exists( $date, $saved_steps['daily_steps'] ) ) {
 			$steps = $saved_steps['daily_steps'][$date];
 		}

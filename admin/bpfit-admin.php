@@ -120,6 +120,7 @@ if( !class_exists( 'BPFit_AdminPage' ) ) {
 				/************************** BADGE OS POINTS / STEPS **************************/
 				$bpfit_general_settings['badgeos_points_settings'] = sanitize_text_field( $_POST['bpfit-badgeos-points'] );
 				$bpfit_general_settings['steps_walked_settings'] = sanitize_text_field( $_POST['bpfit-steps-walked'] );
+				$bpfit_general_settings['profile_menu_label'] = sanitize_text_field( $_POST['bpfit-profile-menu-label'] );
 
 				/**
 				 * Check if there are any errors

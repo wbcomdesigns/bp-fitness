@@ -8,6 +8,14 @@ global $bpfitness;
 	<div class="bpfit-general-settings-container">
 		<table class="form-table">
 			<tbody>
+				<!-- PROFILE MENU LABEL -->
+				<tr>
+					<th scope="row"><label for="bpfit-profile-menu-label"><?php _e( 'Profile Menu Label', BPFIT_TEXT_DOMAIN );?></label></th>
+					<td>
+						<input type="text" placeholder="<?php _e( 'Label', BPFIT_TEXT_DOMAIN );?>" name="bpfit-profile-menu-label" value="<?php echo $bpfitness->profile_menu_label;?>" class="regular-text" required>
+						<p class="description"><?php _e( 'This label will be seen in the profile menu(Please make sure you enter <strong>singular</strong> text).', BPFIT_TEXT_DOMAIN );?></p>
+					</td>
+				</tr>
 				<!-- VIDEO SETTINGS -->
 				<tr>
 					<th scope="row">
