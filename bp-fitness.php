@@ -47,9 +47,9 @@ function run_bp_fitness_plugin(){
 	$include_files = array(
 		'inc/bpfit-scripts.php',
 		'admin/bpfit-admin.php',
+		'inc/bpfit-globals.php',
 		'inc/bpfit-hooks.php',
-		'inc/bpfit-ajax.php',
-		'inc/bpfit-globals.php'
+		'inc/bpfit-ajax.php'
 	);
 	foreach ($include_files  as $include_file) include $include_file;
 
@@ -59,6 +59,9 @@ function run_bp_fitness_plugin(){
 	//Initialize globals class
 	global $bpfitness;
 	$bpfitness = new Bpfit_Globals();
+
+	//Initialize Hooks class
+	new Bpfit_Hooks();
 }
 
 function bpfit_admin_settings_link( $links ) {

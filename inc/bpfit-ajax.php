@@ -53,14 +53,16 @@ if( !class_exists( 'Bpfit_Ajax' ) ) {
 				$user_id = get_current_user_id();
 
 				//Walk Record
-				$walk = get_user_meta( $user_id, 'my_walk' );
+				$walk = get_user_meta( $user_id, 'my_walk', true );
 				$walk['daily_walk'][$today] = $kms;
-				update_user_meta( $user_id, 'my_walk', $walk );
+				//update_user_meta( $user_id, 'my_walk', $walk );
 
 				//Steps Record
-				$steps = get_user_meta( $user_id, 'my_steps' );
+				$steps = get_user_meta( $user_id, 'my_steps', true );
 				$steps['daily_steps'][$today] = $steps_walked;
-				update_user_meta( $user_id, 'my_steps', $steps );
+				//update_user_meta( $user_id, 'my_steps', $steps );
+
+				echo '<pre>'; print_r( $walk ); print_r( $steps ); die("lkoo");
 
 				$points = 0;
 				$settings = get_option( 'bpfit_general_settings', true );

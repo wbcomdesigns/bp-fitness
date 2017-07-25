@@ -1,6 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 global $bpfitness;
+if( !empty( $bpfitness->video_url ) ) {
+	$video_url = $bpfitness->video_url;
+	$video_type = $bpfitness->video_type;
+}
 // echo '<pre>'; print_r( $bpfitness ); die;
 ?>
 <div class="wrap">
@@ -24,29 +28,9 @@ global $bpfitness;
 					<td>
 						<input required name="bpfit-video-url" type="text" id="bpfit-video-url" class="regular-text" placeholder="<?php _e( 'Video URL', BPFIT_TEXT_DOMAIN );?>" value="<?php echo $bpfitness->video_url;?>">
 						<?php if( !empty( $bpfitness->video_url ) ) {?>
-							<input type="button" class="button button-secondary" id="bpfit-preview-video" value="<?php _e( 'Preview', BPFIT_TEXT_DOMAIN );?>">
+							<input type="button" class="button button-secondary" id="bpfit-preview-video" value="<?php _e( 'Preview', BPFIT_TEXT_DOMAIN );?>" data-video="<?php echo $video_url;?>">
 						<?php }?>
 						<p class="description"><?php _e( 'This is the Video URL that\'ll manage user\'s fitness. Get points while playing it.', BPFIT_TEXT_DOMAIN );?></p>
-						<?php
-						if( !empty( $bpfitness->video_url ) ) {
-							$video_url = $bpfitness->video_url;
-							$video_type = $bpfitness->video_type;
-
-							if( $video_type == 'youtube' ) {
-								$exploded_url = explode( '=', $video_url );
-								$video_code = $exploded_url[1];
-								$iframe_src = 'http://www.youtube.com/embed/'.$video_code.'?enablejsapi';
-							} elseif ( $video_type == 'vimeo' ) {
-								$exploded_url = explode( '/', $video_url );
-								$video_code_index = count($exploded_url) - 1;
-								$video_code = $exploded_url[$video_code_index];
-								$iframe_src = 'http://player.vimeo.com/video/'.$video_code;
-							} else {
-								$iframe_src = $video_url;
-							}
-							echo '<div class="bpfit-preview-video-panel"><iframe width="520" height="360" src="'.$iframe_src.'" frameborder="0" allowtransparency="true" allowfullscreen></iframe></div>';
-						}
-						?>
 					</td>
 				</tr>
 

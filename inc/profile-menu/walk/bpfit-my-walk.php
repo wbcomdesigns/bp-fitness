@@ -13,8 +13,8 @@ $my_avg_walk = '';
 ?>
 <div class="tabs">
 	<ul class="tab-links">
-		<li class="active"><a href="#tab1">Daily Walk</a></li>
-		<li><a href="#tab2">Watching Video</a></li>
+		<li class="active"><a href="#tab1"><?php _e( 'Daily Walk', BPFIT_TEXT_DOMAIN );?></a></li>
+		<li><a href="#tab2"><?php _e( 'Watching Video', BPFIT_TEXT_DOMAIN );?></a></li>
 	</ul>
 
 	<div class="tab-content bpfit-your-walk-content">

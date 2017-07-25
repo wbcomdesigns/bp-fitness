@@ -67,5 +67,35 @@ jQuery(document).ready(function($){
 		jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
 		e.preventDefault();
 	});
-    /* TABS JS */
+	/* TABS JS */
+
+	/* VIDEO PLAY - YOU TUBE */
+	if( bpfit_front_js_object.video_type == 'youtube' ) {
+		var tag = document.createElement('script');
+		tag.src = 'https://www.youtube.com/iframe_api&#8221';
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		var player;
+
+		var video_url = bpfit_front_js_object.video_url;
+		var video_details = video_url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+		var video_id = video_details[1];
+		
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('bpfit-video-embed', {
+				height: '390',
+				width: '640',
+				videoId: video_id,
+				events: {
+					'onReady': onPlayerReady,
+					//'onStateChange': onPlayerStateChange
+				}
+			});
+		}
+
+		function onPlayerReady(event) {
+			alert('video started');
+		}
+	}
+    /* VIDEO PLAY - YOU TUBE */
 });

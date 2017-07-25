@@ -5,13 +5,13 @@
 		<?php
 		$steps = 0;
 		$saved_steps = get_user_meta( $user_id, 'my_steps', true );
-		echo '<pre>'; print_r( $saved_steps ); die;
+		//echo '<pre>'; print_r( $saved_steps ); die;
 		if( !empty( $saved_steps ) && array_key_exists( $date, $saved_steps['daily_steps'] ) ) {
 			$steps = $saved_steps['daily_steps'][$date];
 		}
 		?>
 		<p>
-			<?php _e( 'Steps walked on: <strong>'.$date.'</strong> : <i>'.$steps.'</i>', 'bp-fitness' );?>
+			<?php _e( 'Steps walked on: <strong>'.$date.'</strong> : <b><u>'.$steps.'</b></u>', 'bp-fitness' );?>
 			<!-- <a href="javascript:void(0);" class="bpfit-edit-walk" data-panel="<?php //echo $key;?>"><?php //_e( 'Edit', 'bp-fitness' );?></a> -->
 			<div id="bpfit-walk-edit-panel-<?php echo $key;?>" class="bpfit-walk-edit-panel">
 				<p class="bpfit-success bpfit-walk-updated"></p>

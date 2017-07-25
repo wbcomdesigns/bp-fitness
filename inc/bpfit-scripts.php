@@ -31,7 +31,12 @@ if( !class_exists( 'Bpfit_Styles_Scripts' ) ) {
 		 * Actions performed to setup navigation on BP member profile
 		 */
 		public function bpfit_enqueue_public_scripts(){
-			if( stripos($_SERVER['REQUEST_URI'], 'fitness') !== false ) {
+			global $bpfitness;
+			$profile_menu_slug = $bpfitness->profile_menu_slug;
+			$video_type = $bpfitness->video_type;
+			$video_url = $bpfitness->video_url;
+
+			if( stripos( $_SERVER['REQUEST_URI'], $profile_menu_slug ) !== false ) {
 				wp_enqueue_style( 'bpfit-front-css', BPFIT_PLUGIN_URL.'assets/public/css/bpfit-front.css' );
 				wp_enqueue_script( 'bpfit-front-js', BPFIT_PLUGIN_URL.'assets/public/js/bpfit-front.js', array( 'jquery' ) );
 
@@ -39,7 +44,9 @@ if( !class_exists( 'Bpfit_Styles_Scripts' ) ) {
 					'bpfit-front-js',
 					'bpfit_front_js_object',
 					array(
-						'ajaxurl' => admin_url('admin-ajax.php')
+						'ajaxurl'		=> admin_url('admin-ajax.php'),
+						'video_type'	=> $video_type,
+						'video_url'		=> $video_url
 					)
 				);
 			}

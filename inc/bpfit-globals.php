@@ -34,7 +34,7 @@ if( !class_exists( 'Bpfit_Globals' ) ) {
 		public function setup_globals() {
 			global $bpfitness;
 			$settings = get_option( 'bpfit_general_settings', true );
-			$video_url = $past_dates = '';
+			$this->video_type = $this->video_url = $this->past_dates = '';
 			if( isset( $settings['video_settings'] ) ) {
 				$this->video_type = $settings['video_settings']['video_type'];
 				$this->video_url = $settings['video_settings']['video_url'];

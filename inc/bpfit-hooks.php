@@ -216,5 +216,4 @@ if( !class_exists( 'Bpfit_Hooks' ) ) {
 			return array_reverse( $dateArray );
 		}
 	}
-	new Bpfit_Hooks();
 }
